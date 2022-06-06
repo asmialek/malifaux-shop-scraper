@@ -126,12 +126,12 @@ def generate_table(item_list, shops_dict):
                 else:
                     table_row.append('-')
         table_rows.append([item.title(), *table_row])
-    print(tabulate.tabulate(table_rows, headers=['box', *shops_dict.keys()], tablefmt="pretty"))
+    return(tabulate.tabulate(table_rows, headers=['box', *shops_dict.keys()], tablefmt="pretty"))
 
 # %%
 def main(item_list):
     shops_dict = create_shop_dict()
-    generate_table(item_list, shops_dict)
+    return generate_table(item_list, shops_dict)
 
 # %% [markdown]
 # ## Dictionary generation
@@ -176,8 +176,5 @@ item_list = ['Tara Core Box',
              'HERE LIES...',
              'HERE LIES',
              ]
-
-# %%
-main(item_list)
 
 
