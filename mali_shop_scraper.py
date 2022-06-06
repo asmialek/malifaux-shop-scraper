@@ -71,7 +71,7 @@ def find_items_allegro():
         for product in products:
             name = product.text
             if name not in product_list:
-                print(name)
+                # print(name)
                 product_list.append(name)
                 new_products += 1 
             product_list.append(name)
@@ -81,7 +81,37 @@ def find_items_allegro():
     return product_list
 
 # %%
-def generate_table(item_list):
+def create_shop_dict():
+    shops_dict = {}
+
+    print('\ngraal')
+    graal = find_items('https://sklep-graal.pl/pl/c/Malifaux-3rd/474/', 30, 'product-inner-wrap', 'productname', 'addtobasket', 'Do koszyka')
+    shops_dict['graal'] = graal
+
+    print('\nbolter')
+    bolter = find_items('https://bolter.pl/pl/c/MALIFAUX-3ed./1211/', 30, 'product-inner-wrap', 'productname', 'addtobasket', 'Do koszyka')
+    shops_dict['bolter'] = bolter
+
+    print('\nstrefa')
+    strefamtg = find_items('https://strefamtg.pl/2596-malifaux-3ed?page=', 30, 'product-miniature__container', 'product-miniature__title', 'product-quantities', 'Dostępne')
+    shops_dict['strefa'] = strefamtg
+
+    print('\nszop')
+    szopgracz = find_items_szopgracz('https://shopgracz.pl/298-malifaux', 'item-product', 'product_name', 's_soon', 'niedostępny')
+    shops_dict['szop'] = szopgracz
+
+    # print('\ngnom')
+    # gnom = find_items('https://gnom-sklep.pl/447-malifaux-3rd-edition?page=', 30, 'product-miniature', 'h3', 'hiaddtocart', 'Dostępny')
+    # shops_dict['gnom'] = gnom
+
+    # print('\nallegro')
+    # allegro = find_items_allegro()
+    # shops_dict['allegro'] = allegro
+    
+    return shops_dict
+
+# %%
+def generate_table(item_list, shops_dict):
     table_rows = []
     for item in item_list:
         table_row = []
@@ -98,45 +128,13 @@ def generate_table(item_list):
         table_rows.append([item.title(), *table_row])
     print(tabulate.tabulate(table_rows, headers=['box', *shops_dict.keys()], tablefmt="pretty"))
 
+# %%
+def main(item_list):
+    shops_dict = create_shop_dict()
+    generate_table(item_list, shops_dict)
+
 # %% [markdown]
 # ## Dictionary generation
-
-# %%
-shops_dict = {}
-
-# %%
-graal = find_items('https://sklep-graal.pl/pl/c/Malifaux-3rd/474/', 30, 'product-inner-wrap', 'productname', 'addtobasket', 'Do koszyka')
-shops_dict['graal'] = graal
-
-
-# %%
-bolter = find_items('https://bolter.pl/pl/c/MALIFAUX-3ed./1211/', 30, 'product-inner-wrap', 'productname', 'addtobasket', 'Do koszyka')
-shops_dict['bolter'] = bolter
-
-# %%
-strefamtg = find_items('https://strefamtg.pl/2596-malifaux-3ed?page=', 30, 'product-miniature__container', 'product-miniature__title', 'product-quantities', 'Dostępne')
-shops_dict['strefa'] = strefamtg
-
-# %%
-szopgracz = find_items_szopgracz('https://shopgracz.pl/298-malifaux', 'item-product', 'product_name', 's_soon', 'niedostępny')
-shops_dict['szop'] = szopgracz
-
-# %%
-# shadowarrior = find_items('https://shadowarrior.pl/pl/c/MALIFAUX-WYRD/132/', 30, 'product-inner-wrap', 'productname', 'addtobasket', 'Do koszyka')
-
-# %%
-gnom = find_items('https://gnom-sklep.pl/447-malifaux-3rd-edition?page=', 30, 'product-miniature', 'h3', 'hiaddtocart', 'Dostępny')
-shops_dict['gnom'] = gnom
-
-# %%
-allegro = find_items_allegro()
-shops_dict['allegro'] = allegro
-
-# %% [markdown]
-# ## Dict check
-
-# %%
-shops_dict
 
 # %% [markdown]
 # ## Table generation
@@ -178,6 +176,8 @@ item_list = ['Tara Core Box',
              'HERE LIES...',
              'HERE LIES',
              ]
-generate_table(item_list)        
+
+# %%
+main(item_list)
 
 
